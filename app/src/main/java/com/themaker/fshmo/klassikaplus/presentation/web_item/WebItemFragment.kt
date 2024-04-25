@@ -104,6 +104,7 @@ class WebItemFragment : MvpBaseFragment() {
         }
     }
 
+    @Deprecated("No longer usable")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
