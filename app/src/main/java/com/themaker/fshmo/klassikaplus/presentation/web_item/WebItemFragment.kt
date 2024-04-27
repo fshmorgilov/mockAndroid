@@ -48,20 +48,6 @@ class WebItemFragment : MvpBaseFragment() {
         webView.settings.loadWithOverviewMode = true
         webView.overScrollMode = View.OVER_SCROLL_NEVER
         showState(State.Loading)
-        val bundle = this.arguments
-        if (bundle != null) {
-            this.item = bundle.getSerializable(KEY_ID) as Item
-            Log.d(TAG, "onPostCreateView: item: " + item!!.name)
-            if (item != null && item!!.pageAlias != null) {
-                webView!!.loadUrl(item!!.pageAlias)
-                showState(State.HasData)
-                Log.i(TAG, "onPostCreateView: item loaded: " + item!!.pageAlias)
-            } else {
-                showError("item is null")
-            }
-        } else {
-            showError("bundle is null")
-        }
     }
 
     override fun onDestroy() {
@@ -90,16 +76,19 @@ class WebItemFragment : MvpBaseFragment() {
                 error.visibility = View.GONE
                 toolbar.visibility = View.VISIBLE
             }
+
             State.NoData -> {
                 webView.visibility = View.GONE
                 error.visibility = View.VISIBLE
                 toolbar.visibility = View.VISIBLE
             }
+
             State.Loading -> {
                 webView.visibility = View.GONE
                 error.visibility = View.GONE
                 toolbar.visibility = View.VISIBLE
             }
+
             else -> throw IllegalStateException()
         }
     }
@@ -125,7 +114,6 @@ class WebItemFragment : MvpBaseFragment() {
             val bundle = Bundle()
             bundle.putSerializable(KEY_ID, item)
             fragment.arguments = bundle
-            Log.i(TAG, "newInstance: fragment created for item: " + item.name)
             return fragment
         }
     }

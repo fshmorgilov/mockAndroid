@@ -17,16 +17,18 @@ import io.reactivex.subjects.Subject
 import java.util.UUID
 
 import android.content.Context.CONNECTIVITY_SERVICE
+import dagger.hilt.android.qualifiers.ApplicationContext
 
-class NetworkUtils {
+class NetworkUtils() {
     val networkReceiver = NetworkReceiver()
     val notificationTapReceiver = NotificationTapReceiver()
     private val networkState = BehaviorSubject.createDefault(isNetworkAvailable)
+    @ApplicationContext
+    private lateinit var context: Context
 
     private val isNetworkAvailable: Boolean
         get() {
-            val connectivityManager = App.getInstance()
-                .applicationContext
+            val connectivityManager = context
                 .getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager ?: return false
             val info = connectivityManager.activeNetworkInfo
             return info != null && info.isConnected

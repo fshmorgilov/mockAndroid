@@ -16,12 +16,16 @@ import com.themaker.fshmo.klassikaplus.data.preferences.Preferences
 import com.themaker.fshmo.klassikaplus.presentation.base.MvpAppCompatActivity
 import com.themaker.fshmo.klassikaplus.presentation.catalog.CatalogFragment
 import com.themaker.fshmo.klassikaplus.presentation.web_item.WebItemFragment
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback, MainNavigationCallback {
+@AndroidEntryPoint
+class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback,
+    MainNavigationCallback {
 
     @Inject
     internal lateinit var preferences: Preferences
+
     @InjectPresenter
     internal lateinit var presenter: MainActivityPresenter
 
@@ -31,7 +35,6 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback, 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate: ----------------------")
         Log.i(TAG, "onCreate: STARTED")
-        App.getInstance().component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         drawerLayout = findViewById(R.id.main_base_view_group)
@@ -45,6 +48,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback, 
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
         Log.i(TAG, "onBackPressed: ")
         val backStackEntryCount = supportFragmentManager.backStackEntryCount
         if (backStackEntryCount > 1) {
@@ -62,7 +66,10 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback, 
     }
 
     override fun launchItemWebViewFragment(item: Item) {
-        Log.i(TAG, "launchItemWebViewFragment: displaying itemWebViewFragment with item: " + item.name)
+        Log.i(
+            TAG,
+            "launchItemWebViewFragment: displaying itemWebViewFragment with item: "
+        )
         supportFragmentManager.beginTransaction()
             .replace(R.id.main_frame, WebItemFragment.newInstance(item))
             .addToBackStack(WEBVIEW_TAG)
@@ -75,6 +82,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback, 
                 Log.i(TAG, "onOptionsItemSelected: MainNavigation called") //this is not printed out
                 return false
             }
+
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -93,6 +101,7 @@ class MainActivity : MvpAppCompatActivity(), MainActivityView, WebItemCallback, 
                 .replace(R.id.main_frame, CatalogFragment())
                 .addToBackStack("Catalog")
                 .commit()
+
             R.id.nav_about -> {
             }
         }

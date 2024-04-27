@@ -13,11 +13,14 @@ import com.themaker.fshmo.klassikaplus.R
 import com.themaker.fshmo.klassikaplus.data.preferences.Preferences
 import com.themaker.fshmo.klassikaplus.data.web.catalog.CatalogApi
 import com.themaker.fshmo.klassikaplus.presentation.root.MainActivity
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
 import javax.inject.Inject
 
 
-class RevisionRequestService(private val context: Context, workerParams: WorkerParameters) :
+class RevisionRequestService(@ApplicationContext private val context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
 
     private var notificationManager: NotificationManager? = null
@@ -27,9 +30,6 @@ class RevisionRequestService(private val context: Context, workerParams: WorkerP
     @Inject
     lateinit var preferences: Preferences
 
-    init {
-        App.getInstance().component.inject(this)
-    }
 
     override fun doWork(): Result {
         try {

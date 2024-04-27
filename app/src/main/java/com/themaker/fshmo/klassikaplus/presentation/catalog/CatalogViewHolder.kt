@@ -27,9 +27,6 @@ class CatalogViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         name = view.findViewById(R.id.novelty_item_name)
         price = view.findViewById(R.id.novelty_item_price)
 
-        price.text = item.price?.toString()
-        name.text = item.name
-        item.icon.let { glide.load(it).into(image) }
         view.setOnClickListener { onItemClickListener(item) }
         Log.d(TAG, "Binded item: ${item.id}")
     }

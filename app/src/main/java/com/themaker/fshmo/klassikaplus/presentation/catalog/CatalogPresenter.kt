@@ -55,8 +55,5 @@ internal class CatalogPresenter : MvpPresenter<CatalogView>() {
         viewState.showState(State.HasData)
     }
 
-    init {
-        App.getInstance().component.inject(this)
-    }
 
 }
