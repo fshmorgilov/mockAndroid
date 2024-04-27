@@ -7,7 +7,6 @@
 
     <application
             android:name=".App"
-            android:allowBackup="true"
             android:classLoader="App.class"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
@@ -18,7 +17,6 @@
         <activity
                 android:name=".presentation.root.MainActivity"
                 android:label="@string/novelties"
-                android:screenOrientation="fullSensor"
                 android:exported="true"
                 >
             <intent-filter>
