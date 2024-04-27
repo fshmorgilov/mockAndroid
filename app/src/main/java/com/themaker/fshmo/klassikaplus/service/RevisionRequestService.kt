@@ -8,13 +8,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.themaker.fshmo.klassikaplus.App
 import com.themaker.fshmo.klassikaplus.R
 import com.themaker.fshmo.klassikaplus.data.preferences.Preferences
 import com.themaker.fshmo.klassikaplus.data.web.catalog.CatalogApi
 import com.themaker.fshmo.klassikaplus.presentation.root.MainActivity
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.IOException
 import javax.inject.Inject
@@ -54,7 +51,7 @@ class RevisionRequestService(@ApplicationContext private val context: Context, w
     private fun makeNotification() {
         val notificationTapIntent = Intent(context, MainActivity::class.java)
         notificationTapIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-        val pendingIntent = PendingIntent.getActivity(context, 0, notificationTapIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(context, REQUEST_INTERVAL, notificationTapIntent, PendingIntent.FLAG_IMMUTABLE)
         val notification = NotificationCompat.Builder(applicationContext, "abcde")
             .setSmallIcon(R.drawable.logo_main) // fixme: 2/20/2019 change icon
             .setContentTitle(context.getString(R.string.collection_is_updated))

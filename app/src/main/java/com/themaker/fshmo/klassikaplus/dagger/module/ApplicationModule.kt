@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.themaker.fshmo.klassikaplus.data.preferences.Preferences
+import com.themaker.fshmo.klassikaplus.service.NetworkUtils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,5 +41,16 @@ class ApplicationModule () {
     @Singleton
     fun preferences(sharedPreferences: SharedPreferences?): Preferences {
         return Preferences(sharedPreferences!!)
+    }
+    @Provides
+    @Singleton
+    fun context(@ApplicationContext context: Context?): Context {
+        return context!!
+    }
+
+    @Provides
+    @Singleton
+    fun networkUtils(@ApplicationContext context: Context?): NetworkUtils{
+        return NetworkUtils(context!!)
     }
 }

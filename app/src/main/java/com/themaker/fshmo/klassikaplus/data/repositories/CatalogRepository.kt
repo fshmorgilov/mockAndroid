@@ -13,6 +13,7 @@ import com.themaker.fshmo.klassikaplus.data.web.dto.catalog.items.ItemDto
 import com.themaker.fshmo.klassikaplus.data.web.dto.catalog.items.ResponseDto
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
@@ -23,16 +24,10 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 class CatalogRepository : BaseRepository() {
 
-    @Inject
     lateinit var db: AppDatabase
-
-    @Inject
     lateinit var api: CatalogApi
-
-    @ApplicationContext
     lateinit var context: Context
 
     @InstallIn(SingletonComponent::class)
@@ -40,15 +35,19 @@ class CatalogRepository : BaseRepository() {
     interface ICatalogProviderEntryPoint {
         fun getDatabase(): AppDatabase
         fun getCatalogApi() : CatalogApi
+        fun getContext(): Context
     }
-
-    fun provideByCategoryData(category: Int?): Flowable<List<Item>> {
+    init {
         val entryPoint = EntryPointAccessors.fromApplication(
             context = context,
             entryPoint = ICatalogProviderEntryPoint::class.java
         )
         db = entryPoint.getDatabase()
         api = entryPoint.getCatalogApi()
+        context = entryPoint.getContext()
+    }
+
+    fun provideByCategoryData(category: Int?): Flowable<List<Item>> {
         val itemDtoDbItemMapper = ListMapping(DtoToDbItemMapper())
         val dbItemDomainListMapper = ListMapping(DbToDomainItemMapper())
         return getItemsFromDbByCategory(category)

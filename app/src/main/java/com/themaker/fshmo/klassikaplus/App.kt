@@ -8,7 +8,6 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.facebook.stetho.Stetho
-import com.themaker.fshmo.klassikaplus.service.NetworkUtils.Companion.instance
 import com.themaker.fshmo.klassikaplus.service.RevisionRequestService
 import com.themaker.fshmo.klassikaplus.service.RevisionRequestService.Companion.REQUEST_INTERVAL
 import com.themaker.fshmo.klassikaplus.service.RevisionRequestService.Companion.WORK_TAG
@@ -41,9 +40,6 @@ class App : Application() {
                 .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 2, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
-            instance()
-                .notificationTapReceiver
-                .setWorkRequestId(workRequest.id)
             WorkManager.getInstance()
                 .enqueueUniquePeriodicWork(WORK_TAG, ExistingPeriodicWorkPolicy.KEEP, workRequest)
         }

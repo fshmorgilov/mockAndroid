@@ -2,33 +2,25 @@ package com.themaker.fshmo.klassikaplus.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.Intent
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.util.Log
-import androidx.work.WorkManager
-import com.themaker.fshmo.klassikaplus.App
 import com.themaker.fshmo.klassikaplus.presentation.root.MainActivity
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.Subject
-
 import java.util.UUID
 
-import android.content.Context.CONNECTIVITY_SERVICE
-import dagger.hilt.android.qualifiers.ApplicationContext
-
-class NetworkUtils() {
+class NetworkUtils (context: Context) {
     val networkReceiver = NetworkReceiver()
     val notificationTapReceiver = NotificationTapReceiver()
     private val networkState = BehaviorSubject.createDefault(isNetworkAvailable)
-    @ApplicationContext
-    private lateinit var context: Context
+    private val appContext = context
 
-    private val isNetworkAvailable: Boolean
+    val isNetworkAvailable: Boolean
         get() {
-            val connectivityManager = context
+            val connectivityManager = appContext
                 .getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager ?: return false
             val info = connectivityManager.activeNetworkInfo
             return info != null && info.isConnected
@@ -67,8 +59,6 @@ class NetworkUtils() {
         init {
             Log.i(TAG, "INIT")
         }
-
-        fun instance(): NetworkUtils = NetworkUtils()
 
     }
 }
